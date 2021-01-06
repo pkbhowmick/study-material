@@ -23,8 +23,8 @@ Resource: https://kubernetes.io/docs/tutorials/kubernetes-basics/
 ### Step #02 : Deploy an app
 
 - ```$ kubectl create deployment <deployment_name> <image_location>``` Note: Include the full repository url for images outside Docker hub.
-- ```$ kubectl create deployment go-api-server pkbhowmick/go-rest-api``` [to deploy go-rest-api image in kubernetes]
-- ```$ kubectl get deploymenrts``` [to see the list of all deployments]
+- ```$ kubectl create deployment go-api-server pkbhowmick/go-rest-api:latest``` [to deploy go-rest-api image in kubernetes]
+- ```$ kubectl get deployments``` [to see the list of all deployments]
 - ```$ kubectl proxy``` Note: Pods running inside kubernetes running on a private, isolated network and by default they are visible within the same kubernetes cluster. kubectl command can create a proxy that will provide API endpoint to communicate with our application.
 
 ### Step #03 : Explore the app
