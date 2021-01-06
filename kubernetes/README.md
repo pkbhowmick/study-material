@@ -49,6 +49,23 @@ Resource: https://kubernetes.io/docs/tutorials/kubernetes-basics/
 - ```$ kubectl get rs``` [To see the ReplicaSet created by the Deployment]
 - ```$ kubectl scale deployments/go-api-server --replicas=4``` [To scale up we'll use the kubectl scale command, followed by the deployment type, name and desired number of instances]
 
+## Kubernetes Architecture
+
+### Master node
+
+- API server
+- Scheduler
+- Controller manager
+- ETCD
+  
+### Worker node
+
+- kubelet
+- kube-proxy
+- pod
+- container runtime
+
+
 ## Kubernetes Object Management 
 
 - Imperative commands
