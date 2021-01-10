@@ -30,5 +30,12 @@ appeared over time:
   in the C and Korn shells. The principal authors of bash are Brian Fox and Chet
   Ramey. Bash is probably the most widely used shell on Linux.
   
-
-
+## Users and Groups
+- Every user of the system has a unique login name and a unique user id (UID). For each user, a line in /etc/paaswd file which contains this information as well as Group Id, Home directory, login shell. 
+- An user can be a member of multiple groups. Each group is identified by a single line in
+  the system group file, /etc/group , which includes Group name, group id and user list.
+- Super user with the User id(UID) 0 and normally has the login name root has special priviledges in the system. The superuser can access any file in the system, regardless of the per-
+  missions on that file, and can send signals to any user process in the system. The
+  system administrator uses the superuser account to perform various administrative
+  tasks on the system.
+  
