@@ -150,6 +150,56 @@ The cloud-controller-manager is a Kubernetes control plane component that embeds
 - Route controller: The route controller is responsible for configuring routes in the cloud appropriately so that containers on different nodes in your Kubernetes cluster can communicate with each other.
 - Service controller: Services integrate with cloud infrastructure components such as managed load balancers, IP addresses, network packet filtering, and target health checking.
 
+## Containers
+- Each container that we run is repeatable means that you get the same behavior wherever we run it. 
+- A container image is a ready-to-run software package, containing everything needed to run an application.
+- The container runtime is the software that is responsible for running containers. Kubernetes supports several container runtimes: Docker, containerd, CRI-O or any implementation of the Kubernetes CRI (Container Runtime Interface).
+
+### Images
+
+- A container image represents binary data that encapsulate an application and all its software dependencies.
+- Updating images: The default pull policy is IfNotPresent which causes the Kubelet to skip pulling an image if it already exist. We can use imagePullPolicy of the container to *Always* to always force a pull.
+- Configure nodes to authenticate to a private registry: We can copy our local .docker/config.json(which already has auth key for docker hub) file to every node like root@"$n":/var/lib/kubelet/config.json. After that kubelet will use that config file for pulling image from a private registry.
+- Usecases:
+   - Cluster running only open-source images. No need to hide images.
+   - Cluster running some proprietary images which should be hidden to those outside the company, but visible to all cluster users.
+   - Cluster with proprietary images, a few of which require stricter access control.
+   - A multi-tenant cluster where each tenant needs own private registry.
+  
+### Container Environment
+The Kubernetes Container environment provides several important resources to Containers:
+
+- A filesystem, which is a combination of an image and one or more volumes.
+- Information about the Container itself.
+- Information about other objects in the cluster.
+
+### Runtime Class
+RuntimeClass is a feature for selecting the container runtime configuration. The container runtime configuration is used to run a Pod's containers.
+RuntimeClass can be setup in two ways:
+- Configure the CRI implementation on nodes
+- Create the corresponding RuntimeClass resources
+
+### Container Lifecycle Hooks
+The hooks enable Containers to be aware of events in their management lifecycle and run code implemented in a handler when the corresponding lifecycle hook is executed.
+
+There are two hooks that are exposed to Containers:
+- PostStart: This hook is executed immediately after a container is created.
+- PreStop: This hook is called immediately before a container is terminated due to an API request or management event such as liveness probe failure, preemption, resource contention and others.
+
+Hook handler implementations: Containers can access a hook by implementing and registering a handler for that hook. There are two types of hook handlers that can be implemented for Containers:
+- Exec: Execute a specific command
+- HTTP: Execute an HTTP request 
+
+Hook handler execution: 
+- When a Container lifecycle management hook is called, the Kubernetes management system execute the handler according to the hook action, exec and tcpSocket are executed in the container, and httpGet is executed by the kubelet process.
+- Hook handler calls are synchronous.
+- Hook delivery is guaranteed.
+
+
+
+
+
+
 
 
 
