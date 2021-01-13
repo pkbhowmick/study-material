@@ -195,6 +195,57 @@ Hook handler execution:
 - Hook handler calls are synchronous.
 - Hook delivery is guaranteed.
 
+## Workloads
+A workload is an application running on Kubernetes. Kubernetes provides several built-in workload resources:
+- Deployment and ReplicaSet
+- StatefulSet
+- DaemonSet
+- Job and CronJob
+### Pods
+Pods are the smallest deployable units of computing that you can create and manage in Kubernetes.
+
+A Pod (as in a pod of whales or pea pod) is a group of one or more containers, with shared storage/network resources, and a specification for how to run the containers.
+
+Pods in a Kubernetes cluster are used in two main ways:
+- Pods that run a single container
+- Pods that run multiple containers that need to work together
+
+Here are some examples of workload resources that manage one or more pods:
+- Deployment
+- StatefulSet
+- DaemonSet
+
+Pod templates: The sample below is a manifest for a simple Job with a template that starts one container. The container in that Pod prints a message then pauses.
+```
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hello
+spec:
+  template:
+    # This is the pod template
+    spec:
+      containers:
+      - name: hello
+        image: busybox
+        command: ['sh', '-c', 'echo "Hello, Kubernetes!" && sleep 3600']
+      restartPolicy: OnFailure
+    # The pod template ends here
+```
+
+### Pod Lifecycle
+Pods follow a defined lifecycle, starting in the Pending phase, moving through Running if at least one of its primary containers starts OK, and then through either the Succeeded or Failed phases depending on whether any container in the Pod terminated in failure.
+
+### Init Containers
+During Pod startup, the kubelet delays running init containers until the networking and storage are ready. Then the kubelet runs the Pod's init containers in the order they appear in the Pod's spec.
+
+Each init container must exit successfully before the next container starts. If a container fails to start due to the runtime or exits with failure, it is retried according to the Pod restartPolicy.
+
+### Pod Topology Spread Constraints
+Topology spread constraints can be used to control how Pods are spread across the cluster among failure-domains such as regions, zones, nodes, and other user-defined topology domains. This can help to achieve high availability as well as efficient resource utilization.
+
+### Ephemeral Containers
+Ephemeral Conatainers is a special type of container that runs temporarily in an existing Pod to accomplish user-initiated actions such as troubleshooting.
 
 
 
