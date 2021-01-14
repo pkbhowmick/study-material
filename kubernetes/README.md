@@ -195,7 +195,7 @@ Hook handler execution:
 - Hook handler calls are synchronous.
 - Hook delivery is guaranteed.
 
-## Workloads
+## Workloads(Pods)
 A workload is an application running on Kubernetes. Kubernetes provides several built-in workload resources:
 - Deployment and ReplicaSet
 - StatefulSet
@@ -245,10 +245,89 @@ Each init container must exit successfully before the next container starts. If 
 Topology spread constraints can be used to control how Pods are spread across the cluster among failure-domains such as regions, zones, nodes, and other user-defined topology domains. This can help to achieve high availability as well as efficient resource utilization.
 
 ### Ephemeral Containers
-Ephemeral Conatainers is a special type of container that runs temporarily in an existing Pod to accomplish user-initiated actions such as troubleshooting.
+Ephemeral Containers is a special type of container that runs temporarily in an existing Pod to accomplish user-initiated actions such as troubleshooting.
 
+## Workloads(Resources)
 
+### Deployments
+A Deployment provides declarative updates for Pods and ReplicaSets.
 
+#### Creating a deployment
+Creating a deployment for [go-rest-api](https://github.com/pkbhowmick/go-rest-api) server.
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-server-deployment
+  labels:
+    app: go-rest-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: go-rest-api
+  template:
+    metadata:
+      labels:
+        app: go-rest-api
+    spec:
+      containers:
+        - name: go-rest-api
+          image: pkbhowmick/go-rest-api:latest
+          ports:
+            - containerPort: 8080
+```
+**Note**:
+You must specify an appropriate selector and Pod template labels in a Deployment (in this case, app: nginx).
+
+Do not overlap labels or selectors with other controllers (including other Deployments and StatefulSets). Kubernetes doesn't stop you from overlapping, and if multiple controllers have overlapping selectors those controllers might conflict and behave unexpectedly.
+
+#### Updating a deployment
+**Note**: A Deployment's rollout is triggered if and only if the Deployment's Pod template (that is, .spec.template) is changed, for example if the labels or container images of the template are updated. Other updates, such as scaling the Deployment, do not trigger a rollout.
+
+To update image:
+```shell
+$ kubectl set image deployment/api-server-deployment go-rest-api=pkbhowmick/go-rest-api:1.0 --record
+```
+To edit deployment:
+```shell
+$ kubectl edit deployment.v1.apps/api-server-deployment
+```
+- Label selector updates: It is generally discouraged to make label selector updates and it is suggested to plan your selectors up front.
+  
+**Note:** In API version apps/v1, a deployment's label selector is immutable after it gets created.
+
+#### Rolling back a deployment:
+To check the revisions of the Deployment:
+```shell
+$ kubectl rollout history deployment.v1.apps/api-server-deployment
+```
+To rollback to the previous revision:
+```shell
+kubectl rollout undo deployment.v1.apps/api-server-deployment --to-revision=<revision number>(optional flag)
+```
+
+#### Scaling a deployment
+To scale a deployment:
+```shell
+kubectl scale deployment.v1.apps/api-server-deployment --replicas=4
+```
+To auto scale based on cpu utilization:
+```shell
+kubectl autoscale deployment.v1.apps/api-server-deployment --min=2 --max=5 --cpu-percent=80
+```
+
+#### Pausing and Resuming a Deployment
+We can pause a deployment before triggering one or more updates and then resume it. This allows multiple fixes in between pausing and resuming without triggering unnecessary rollouts.
+Ti pause the deployment:
+```shell
+kubectl rollout pause deployment.v1.apps/api-server-deployment
+```
+To resume the deployment:
+```shell
+kubectl rollout resume deployment.v1.apps/api-server-deployment
+```
 
 
 
