@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: dm-test
+  labels:
+    k8s-app: logging
+spec:
+  selector:
+    matchLabels:
+      name: dmSet-pod
+  template:
+    metadata:
+      labels:
+        name: dmSet-pod
+    spec:
+      containers:
+        - name: fluentd
+          image: quay.io/fluentd_elasticsearch/fluentd:v2.5.2

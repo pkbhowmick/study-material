@@ -279,7 +279,7 @@ spec:
             - containerPort: 8080
 ```
 **Note**:
-You must specify an appropriate selector and Pod template labels in a Deployment (in this case, app: nginx).
+You must specify an appropriate selector and Pod template labels in a Deployment (in this case, app: go-rest-api).
 
 Do not overlap labels or selectors with other controllers (including other Deployments and StatefulSets). Kubernetes doesn't stop you from overlapping, and if multiple controllers have overlapping selectors those controllers might conflict and behave unexpectedly.
 
@@ -320,13 +320,141 @@ kubectl autoscale deployment.v1.apps/api-server-deployment --min=2 --max=5 --cpu
 
 #### Pausing and Resuming a Deployment
 We can pause a deployment before triggering one or more updates and then resume it. This allows multiple fixes in between pausing and resuming without triggering unnecessary rollouts.
-Ti pause the deployment:
+To pause the deployment:
 ```shell
 kubectl rollout pause deployment.v1.apps/api-server-deployment
 ```
 To resume the deployment:
 ```shell
 kubectl rollout resume deployment.v1.apps/api-server-deployment
+```
+
+### ReplicaSet
+A ReplicaSet's purpose is to maintain a stable set of replica Pods running at any given time. But it is recommended to use Deployment instead of ReplicaSet.
+
+### StatefulSets
+StatefulSet is the workload API object to manage stateful applications like databases.
+
+Unlike a Deployment, a StatefulSet maintains a sticky identity for each of thier Pods. These pods are created from the same spec, but are not interchangeable. 
+
+### DaemonSet
+A DaemonSet ensures that all (or some) Nodes run a copy of a Pod. 
+Some typical uses of a DaemonSet are:
+- running a cluster storage daemon on every node
+- running a logs collection daemon on every node
+- running a node monitoring daemon on every node
+
+#### Create a DaemonSet
+```shell
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: dm-test
+  labels:
+    k8s-app: logging
+spec:
+  selector:
+    matchLabels:
+      name: dmSet-pod
+  template:
+    metadata:
+      labels:
+        name: dmSet-pod
+    spec:
+      containers:
+        - name: fluentd
+          image: quay.io/fluentd_elasticsearch/fluentd:v2.5.2
+```
+
+### Jobs
+A Job creates one or more Pods and ensures that a specified number of them successfully terminate.
+
+#### Running an example job
+```shell
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pi
+spec:
+  ttlSecondsAfterFinished: 15
+  template:
+    metadata:
+      name: pi
+    spec:
+      containers:
+      - name: pi
+        image: perl
+        command: ["perl", "-Mbignum=bpi", "-wle", "print bpi(10)"]
+      restartPolicy: Never
+  backoffLimit: 4
+```
+
+### Garbage Collection
+The role of the Kubernetes garbage collector is to delete certain objects that once had an owner, but no longer have an owner.
+
+
+### Replication Controller
+A ReplicationController ensures that a specified number of pod replicas are running at any one time. In other words, a ReplicationController makes sure that a pod or a homogeneous set of pods is always up and available.
+
+#### Deploy API server using Replication Controller
+First write the manifest file ReplicationController.yaml for replication controller
+```shell
+# ReplicationController.yaml
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: api-server-rc
+  label:
+    app: go-rest-api
+spec:
+  replicas: 3
+  selector:
+   app: go-rest-api
+  template:
+    metadata:
+      name: go-rest-api-pod
+      labels:
+        app: go-rest-api
+    spec:
+      containers:
+      - name: go-rest-api
+        image: pkbhowmick/go-rest-api
+        ports:
+        - containerPort: 8080
+```
+
+Let's attach it to a service to access it from outside world.
+```shell
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-server-service
+spec:
+  type: NodePort
+  selector:
+    app: go-rest-api
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30000
+```
+Now let's apply the yaml files using kubectl apply command.
+
+```shell
+$ kubectl apply -f ReplicationController.yaml
+replicationcontroller/api-server-rc created
+$ kubectl apply -f service.yaml
+service/api-server-service created
+```
+Now the API server will be accessible from kind_node_ip:node_port
+
+To clean up things used so far:
+```shell
+$ kubectl delete -f service.yaml
+service "api-server-service" deleted
+$ kubectl delete -f ReplicationController.yaml
+replicationcontroller "api-server-rc" deleted
 ```
 
 

@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: api-server-rc
+  label:
+    app: go-rest-api
+spec:
+  replicas: 3
+  selector:
+   app: go-rest-api
+  template:
+    metadata:
+      name: go-rest-api-pod
+      labels:
+        app: go-rest-api
+    spec:
+      containers:
+      - name: go-rest-api
+        image: pkbhowmick/go-rest-api
+        ports:
+        - containerPort: 8080
