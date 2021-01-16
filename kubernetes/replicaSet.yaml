@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
-  name: frontend
+  name: go-rest-api-rs
   labels:
-    app: guestbook
-    tier: frontend
+    app: go-rest-api
 spec:
-  # modify replicas according to your case
   replicas: 3
   selector:
     matchLabels:
-      tier: frontend
+      app: go-rest-api
   template:
     metadata:
       labels:
-        tier: frontend
+        app: go-rest-api
     spec:
       containers:
-        - name: php-redis
-          image: gcr.io/google_samples/gb-frontend:v3
+        - name: go-rest-api
+          image: pkbhowmick/go-rest-api
+          ports:
+          - containerPort: 8080

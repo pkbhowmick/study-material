@@ -332,6 +332,34 @@ kubectl rollout resume deployment.v1.apps/api-server-deployment
 ### ReplicaSet
 A ReplicaSet's purpose is to maintain a stable set of replica Pods running at any given time. But it is recommended to use Deployment instead of ReplicaSet.
 
+#### Deploy the go-rest-api server using ReplicaSet
+First let's write the manifest file replicaSet.yaml for ReplicaSet
+
+```
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: go-rest-api-rs
+  labels:
+    app: go-rest-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: go-rest-api
+  template:
+    metadata:
+      labels:
+        app: go-rest-api
+    spec:
+      containers:
+        - name: go-rest-api
+          image: pkbhowmick/go-rest-api
+          ports:
+          - containerPort: 8080
+
+```
+
 ### StatefulSets
 StatefulSet is the workload API object to manage stateful applications like databases.
 
