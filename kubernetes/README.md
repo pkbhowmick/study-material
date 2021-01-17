@@ -485,7 +485,54 @@ $ kubectl delete -f ReplicationController.yaml
 replicationcontroller "api-server-rc" deleted
 ```
 
+### CronJob
+CronJobs are useful for creating periodic and recurring tasks, like running backups or sending emails. CronJobs can also schedule individual tasks for a specific time, such as scheduling a Job for when your cluster is likely to be idle.
 
+A sample manifest file to run a CronJob:
+```
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: hello
+spec:
+  schedule: "*/5 * * * *"  # print date and hello in every five minutes
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: hello
+            image: busybox
+            args:
+            - /bin/sh
+            - -c
+            - date; echo hello from kubernetes cluster
+          restartPolicy: OnFailure
+```
+To see CronJob status
+```shell
+$ kubectl get cj
+NAME    SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+hello   */5 * * * *   False     0        <none>          62s
+```
+
+#### CronJob Schedule Syntax
+```
+# ┌───────────── minute (0 - 59)
+# │ ┌───────────── hour (0 - 23)
+# │ │ ┌───────────── day of the month (1 - 31)
+# │ │ │ ┌───────────── month (1 - 12)
+# │ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday;
+# │ │ │ │ │                                   7 is also Sunday on some systems)
+# │ │ │ │ │
+# │ │ │ │ │
+# * * * * *
+```
+To generate CronJob schedule expressions, you can also use web tools like [crontab.guru](https://crontab.guru)
+
+#### CronJob limitation
+- Sometimes the number of jobs creation can't be controlled by CronJob. So, the job should be idempotent.
+- The CronJob is only responsible for creating Jobs that match its schedule, and the Job in turn is responsible for the management of the Pods it represents.
 
 
 
