@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-fanout
+spec:
+  rules:
+  - host: api.github.local
+    http:
+      paths:
+      - path: /api/users/1
+        pathType: Exact
+        backend:
+          service:
+            name: api-server-service
+            port:
+              number: 8080
+      - path: /api/users/2
+        pathType: Exact
+        backend:
+          service:
+            name: api-server-service2
+            port:
+              number: 8080

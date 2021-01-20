@@ -537,5 +537,110 @@ To generate CronJob schedule expressions, you can also use web tools like [cront
 ## Services, Load Balancing, and Networking
 
 ### Service
+A Kubernetes Service is an abstraction which defines a logical set of Pods running somewhere in the cluster, that all provide the same functionality. When created, each Service is assigned a unique IP address (also called clusterIP). This address is tied to the lifespan of the Service, and will not change while the Service is alive. Pods can be configured to talk to the Service, and know that communication to the Service will be automatically load-balanced out to some pod that is a member of the Service.
+
+
+### Service Topology
+Service Topology enables a service to route traffic based upon the Node topology of the cluster. For example, a service can specify that traffic be preferentially routed to endpoints that are on the same Node as the client, or in the same availability zone.
+
+
+### DNS for Services and Pods
+
+### Connecting Applications with Services
+Kubernetes pods can communicate with each other pods, regardless of which host they land on. Kubernetes gives each pod its own cluster-private IP address. So conatainers within a pod can reach others ports on localhost, and all pods in a cluster can see each other without NAT(Network Address Translation).
+
+#### DNS
+Kubernetes offers a DNS cluster addon Service that automatically assigns dns names to other Services. To show this:
+```shell
+$ kubectl get svc kube-dns --namespace=kube-system
+NAME       TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)                  AGE
+kube-dns   ClusterIP   10.96.0.10   <none>        53/UDP,53/TCP,9153/TCP   7d19h
+```
+
+#### Securing the Service
+
+### EndpointSlices
+EndpointSlices provide a simple way to track network endpoints within a Kubernetes cluster. They offer a more scalable and extensible alternative to Endpoints.
+
+### Ingress
+Ingress exposes HTTP and HTTPS routes from outside the cluster to services within the cluster. Traffic routing is controlled by rules defined on the Ingress resource.
+
+Ingress config file to run the previously built API server service:
+```shell
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-server-ingress
+spec:
+  rules:
+  - host: api.github.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: api-server-service
+            port:
+              number: 8080
+```
+
+#### Simple fanout
+A fanout configuration routes traffic from a single IP address to more than one Service, based on the HTTP URI being requested. An Ingress allows to keep the number of load balancers down to a minimum.
+
+A sample example ingress-fanout example:
+```shell
+
+```
+
+### Ingress Controller
+
+### Network Policies
+NetworkPolicies are an application-centric construct which allow us to specify how a pod is allowed to communicate with various network "entities" over the network.
+
+#### Isolated and Non-Isolated Pods
+By default, pods are non-isolated; they accept traffic from any source. Once there is any NetworkPolicy in a namespace selecting a particular pod, that pod will reject any connections that are not allowed by any NetworkPolicy.
+
+#### Policy types
+Each NetworkPolicy includes a policyTypes list which may include either Ingress, Egress, or both. 
+- ingress: Allow/Deny incoming traffic
+- egress: Allow/Deny outgoing traffic
+
+### Adding entries to Pod /etc/hosts with HostAliases
+Adding entries to a Pod's /etc/hosts file provides Pod-level override of hostname resolution when DNS and other options are not applicable. You can add these custom entries with the HostAliases field in PodSpec.
+
+Modification not using HostAliases is not suggested because the file is managed by the kubelet and can be overwritten on during Pod creation/restart.
+
+A Sample hostaliases-pod example:
+```shell
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hostaliases-pod
+spec:
+  restartPolicy: Never
+  hostAliases:
+  - ip: "127.0.0.1"
+    hostnames:
+    - "foo.local"
+    - "bar.local"
+  - ip: "10.1.2.3"
+    hostnames:
+    - "foo.remote"
+    - "bar.remote"
+  containers:
+  - name: cat-hosts
+    image: busybox
+    command:
+    - cat
+    args:
+    - "/etc/hosts"
+```
+Note: The kubelet manages the hosts file for each container of the Pod to prevent Docker from modifying the file after the containers have already been started.
+
+### IPv4/IPv6 dual-stack
+IPv4/IPv6 dual-stack enables the allocation of both IPv4 and IPv6 addresses to Pods and Services.
+
+If IPv4/IPv6 dual-stack networking is enabled, the cluster will support the simultaneous assignment of both Ipv4 and Ipv6 addresses.
 
 
