@@ -588,11 +588,6 @@ spec:
 #### Simple fanout
 A fanout configuration routes traffic from a single IP address to more than one Service, based on the HTTP URI being requested. An Ingress allows to keep the number of load balancers down to a minimum.
 
-A sample example ingress-fanout example:
-```shell
-
-```
-
 ### Ingress Controller
 
 ### Network Policies
