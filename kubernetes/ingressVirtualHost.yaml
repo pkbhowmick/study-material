@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-virtual-host
+spec:
+  rules:
+  - host: api.github.local
+    http:
+      paths:
+      - path: "/"
+        pathType: Prefix
+        backend:
+          service:
+            name: api-server-service
+            port:
+              number: 8080
+  - host: apitest.github.local
+    http:
+      paths:
+        - path: "/"
+          pathType: Prefix
+          backend:
+            service:
+              name: api-server-service2
+              port:
+                number: 8080
+

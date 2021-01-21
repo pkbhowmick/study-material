@@ -3,6 +3,11 @@ kind: Ingress
 metadata:
   name: ingress-fanout
 spec:
+  defaultBackend:
+    service:
+      name: default-http-backend
+      port:
+        number: 8080
   rules:
   - host: api.github.local
     http:
