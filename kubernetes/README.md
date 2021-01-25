@@ -545,7 +545,7 @@ Service Topology enables a service to route traffic based upon the Node topology
 
 
 ### DNS for Services and Pods
-
+- Pending
 ### Connecting Applications with Services
 Kubernetes pods can communicate with each other pods, regardless of which host they land on. Kubernetes gives each pod its own cluster-private IP address. So conatainers within a pod can reach others ports on localhost, and all pods in a cluster can see each other without NAT(Network Address Translation).
 
