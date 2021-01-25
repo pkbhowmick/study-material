@@ -638,4 +638,38 @@ IPv4/IPv6 dual-stack enables the allocation of both IPv4 and IPv6 addresses to P
 
 If IPv4/IPv6 dual-stack networking is enabled, the cluster will support the simultaneous assignment of both Ipv4 and Ipv6 addresses.
 
+## Storage 
+
+## Volumes
+
+### Why need volumes?
+
+### Volumes categories 
+
+### Volume Types
+- Ephemeral: Same lifecycle as Pod.
+- Durable: Beyond pods lifecycle.
+### emptyDir
+- Creates empty directory first created when a Pod is assigned to a Node
+- Stays as long as pod is running
+- Once pod is removed from a node, emptyDir is deleted forever
+
+Usecases: Temporary space (sharing data between multiple containers in Pod)
+### hostPath
+- mounts a file or directory from the host node's filesystem into your Pod
+- Remains even after the pod is terminated but if node dies, data will be lost. 
+- Similar to docker volume. Docker mounts host directory with container directory. hostPath mounts host directory with Pod directory.
+
+### gcePersistantDisk
+- volume mounts a GCE PD into Pod
+- Volume data is persisted pods termination
+
+### How can data persist through-out lifecycle of Pod?
+
+### How can data persist beyond lifecycle of Pod?
+
+### How can containers share files between containers in Pod?
+
+
+
 
