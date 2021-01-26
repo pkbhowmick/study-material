@@ -648,7 +648,7 @@ If IPv4/IPv6 dual-stack networking is enabled, the cluster will support the simu
 
 ### Volume Types
 - Ephemeral: Same lifecycle as Pod.
-- Durable: Beyond pods lifecycle.
+- Persistant: Beyond pods lifecycle.
 ### emptyDir
 - Creates empty directory first created when a Pod is assigned to a Node
 - Stays as long as pod is running
@@ -663,6 +663,8 @@ Usecases: Temporary space (sharing data between multiple containers in Pod)
 ### gcePersistantDisk
 - volume mounts a GCE PD into Pod
 - Volume data is persisted pods termination
+
+### local
 
 ### How can data persist through-out lifecycle of Pod?
 
