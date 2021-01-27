@@ -665,6 +665,14 @@ Usecases: Temporary space (sharing data between multiple containers in Pod)
 - Volume data is persisted pods termination
 
 ### local
+- mounted a local storage device such as a disk,partition or directory
+- used as a statically created PersistentVolume.
+- Dynamic provisioning is not supported.
+- nodeAffinity should be set when using local volumes to schedule these Pods to the correct node.
+
+### nfs
+- persistent volume, data remains beyonds pod lifecycle
+- can be pre-polulated with data and that data can be shared between pods.
 
 ### How can data persist through-out lifecycle of Pod?
 

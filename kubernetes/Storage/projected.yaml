@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: volume-test
+spec:
+  containers:
+  - name: container-test
+    image: pkbhowmick/go-rest-api:latest
+    volumeMounts:
+      - name: secret1
+        mountPath: "/projected-volume"
+        readOnly: true
+  volumes:
+    - secret:
+        secretName: mysecret1
+      name: secret1
