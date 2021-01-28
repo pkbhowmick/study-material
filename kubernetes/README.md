@@ -674,11 +674,14 @@ Usecases: Temporary space (sharing data between multiple containers in Pod)
 - persistent volume, data remains beyonds pod lifecycle
 - can be pre-polulated with data and that data can be shared between pods.
 
-### How can data persist through-out lifecycle of Pod?
+### Volume Snapshot
+- Request for snapshot of a volume by a user similar to a PersistentVolumeClaim
 
-### How can data persist beyond lifecycle of Pod?
+### CSI Volume Cloning
 
-### How can containers share files between containers in Pod?
+### Storage Class
+
+
 
 
 
