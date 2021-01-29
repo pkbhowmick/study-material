@@ -677,9 +677,7 @@ Usecases: Temporary space (sharing data between multiple containers in Pod)
 ### Volume Snapshot
 - Request for snapshot of a volume by a user similar to a PersistentVolumeClaim
 
-### CSI Volume Cloning
-
-### Storage Class
+### Ephemeral volume
 
 
 
