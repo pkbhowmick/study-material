@@ -28,11 +28,22 @@ spec:
       containers:
       - name: mongo
         image: mongo
+        env:
+          - name: MONGO_INITDB_ROOT_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secret
+                key: username
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secret
+                key: password
         ports:
         - containerPort: 27017
         volumeMounts:
         - name: mongodb-vol-claim
-          mountPath: "/dbdata"
+          mountPath: "/var/lib/mongodb"
   volumeClaimTemplates:
   - metadata:
       name: mongodb-vol-claim
