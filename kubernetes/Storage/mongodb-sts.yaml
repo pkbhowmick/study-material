@@ -43,7 +43,7 @@ spec:
         - containerPort: 27017
         volumeMounts:
         - name: mongodb-vol-claim
-          mountPath: "/var/lib/mongodb"
+          mountPath: "/data/db"
   volumeClaimTemplates:
   - metadata:
       name: mongodb-vol-claim
@@ -53,5 +53,6 @@ spec:
       resources:
         requests:
           storage: 1Gi
+
   
         
