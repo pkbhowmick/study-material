@@ -21,6 +21,10 @@ spec:
     volumeMounts:
     - name: site-data
       mountPath: /var/lib/mysql
+      subPath: mysql
+    - name: site-data
+      mountPath: /var/www/html
+      subPath: html
   volumes:
   - name: site-data
     persistentVolumeClaim:
