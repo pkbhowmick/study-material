@@ -677,7 +677,11 @@ Usecases: Temporary space (sharing data between multiple containers in Pod)
 ### Volume Snapshot
 - Request for snapshot of a volume by a user similar to a PersistentVolumeClaim
 
-### Ephemeral volume
+### SubPath
+- When same volume is mounted in different paths, without using subPath creates same root bound directory is edited by two mount paths. To avoid this subPath is used. subPath creates two folders in root to avoid this.
+
+
+
 
 
 
