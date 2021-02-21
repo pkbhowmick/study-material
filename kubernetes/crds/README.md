@@ -39,3 +39,9 @@ spec:
       - ct
 
 ```
+
+### References:
+- [Extend the Kubernetes API with CustomResourceDefinitions](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#create-a-customresourcedefinition)
+
+- [Kubernetes in Action (Book by Marko Luska)](https://www.manning.com/books/kubernetes-in-action)
+
