@@ -1,0 +1,16 @@
+apiVersion: stable.example.com/v1
+kind: KubeApi
+metadata:
+  name: go-rest-api
+spec:
+  replicas: 2
+  hostUrl: api.github.local
+  serviceType: NodePort
+  container:
+    image: pkbhowmick/go-rest-api:2.0.1
+    containerPort: 8080
+
+
+
+
+
