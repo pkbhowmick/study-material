@@ -79,6 +79,13 @@ Example:
 
 #### Client-gen Tags
 
+- ``` // +genclient``` tag tells client-gen to create a client for this type.
+
+- ``` // +genclient:noStatus``` tag tells client-gen that this type is not using spec-status separation via the /status subresource.
+
+- ``` // +genclient:nonNamespaced``` tag is used for cluster-wide resources.
+
+- ``` // +genclient:no```
 
 ### References:
 - [Extend the Kubernetes API with CustomResourceDefinitions](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#create-a-customresourcedefinition)
