@@ -179,3 +179,16 @@ query on, but it doesn’t make sense to use them as target labels
 ### Cardinality
 - In Prometheus, Cardinality is the nunber of time series you have. 
 - The rule of thumbs writer used is that the cardinality of an arbitary metrics in one application instance should be kept below ten.
+
+
+## Dashboarding with Grafana
+An example dashboard in grafana.
+
+![image](static/prometheus-dashboard.png)
+
+
+
+## Extra Resources:
+- [Prometheus documentation](https://prometheus.io/docs/prometheus/latest/getting_started/)
+- [Prometheus Architecture Explained](https://www.youtube.com/watch?v=h4Sl21AKiDg&t=1s)
+- [Prometheus Tutorial by Edureka](https://www.youtube.com/watch?v=7gW5pSM6dlU)
