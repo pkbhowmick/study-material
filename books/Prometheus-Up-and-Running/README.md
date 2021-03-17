@@ -187,8 +187,92 @@ An example dashboard in grafana.
 ![image](static/prometheus-dashboard.png)
 
 
+## Service Discovery
 
-## Extra Resources:
+Service discovery in Prometheus is to introduce the scrape target. It is all about to tell to Prometheus from where to scrape.
+
+### Service Discovery Mechanisms
+
+#### Static
+An example of static service discovery to have Prometheus scrape itself.
+
+```
+scrape_configs:
+  - job_name: prometheus
+	static_configs:
+      - targets:
+         - localhost:9090
+```
+
+
+
+#### File
+
+An example of service discovery using json file is given below:
+
+
+<details>
+
+<summary>filesd.json</summary>
+
+
+```
+[
+    {
+        "targets": ["localhost:9090"],
+        "labels": {
+            "team": "monitoring",
+            "job": "prometheus"
+        }
+    },
+    {
+        "targets": [ "localhost:8081", "localhost:8085" ],
+        "labels": {
+            "team": "infra",
+            "job": "node"
+        }
+    }
+]
+
+```
+
+
+</details>
+
+### Relabelling
+- Relabelling can be used to map from metadata to target.
+
+- ```relabel_config``` is used in the config file for relabelling meta data to target.
+
+An example of relabelling to keep relabel action to only monitor targets with a team="infra":
+
+```
+scrape_configs:
+ - job_name: file
+   file_sd_configs:
+    - files:
+      - '*.json'
+	relabel_configs:
+	 - source_labels: [team]
+	   regex: infra
+	   action: keep
+```
+
+### Target Labels
+
+- Target Labels are labels that are added to the labels of every time series returned from a scrape. They are the identity of the target. 
+
+
+#### Replace
+- Replace action can be used to relabel the service metadata to the expected target label.
+
+#### job, instance, and ```__address__```
+
+- By default there are some common target labels. They are job & instance. If the target has no instance label, it is defaulted to the value of the address label from service metadata.
+
+
+
+## Resources:
 - [Prometheus documentation](https://prometheus.io/docs/prometheus/latest/getting_started/)
 - [Prometheus Architecture Explained](https://www.youtube.com/watch?v=h4Sl21AKiDg&t=1s)
 - [Prometheus Tutorial by Edureka](https://www.youtube.com/watch?v=7gW5pSM6dlU)
