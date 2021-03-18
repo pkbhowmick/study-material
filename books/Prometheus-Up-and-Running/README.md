@@ -92,6 +92,14 @@ known as exposition. Exposition to Prometheus is done over HTTP by using "/metri
 ## Labels
 Labels are key-value pairs associated with time series, that in addition to the metric name, uniquely identify them.
 
+
+### Instrumentation and Target Labels
+
+- Labels come from two sources, instrumentation labels and target labels.
+- Instrumentation labels, as the name suggest, come from the instrumentation labels. 
+- Target labels identify a specific monitoring target that Prometheus scraps.
+
+
 An example for counter with label:
 
 <details>
@@ -301,11 +309,10 @@ Examples:
 
 ### Summary
 
-- A summary metric will usually contain both a _sum and _count. The _sum and _count are both counters.
+- A summary metric will usually contain both a _sum and _count. The _sum and _count are both counters. As both are counters, before aggregating rate must be used.
 
 - For example, prometheus exposes a http_response_size_bytes summary where http_response_size_bytes_count tracks the number of requests. Similarly, http_response_size_bytes_sum is a counter with the number of bytes of each handle has returned. 
 
-- As both are counters, before aggregating rate must be used.
 
 Examples:
 
@@ -412,4 +419,6 @@ Response:
 - [Prometheus Tutorial by Edureka](https://www.youtube.com/watch?v=7gW5pSM6dlU)
 - [Setup Prometheus monitoring on kubernetes using helm and prometheus operator | Part-1](https://www.youtube.com/watch?v=QoDqxm7ybLc)
 - [Prometheus Monitoring - Steps to monitor third-party apps using Prometheus Exporter | Part-2](https://www.youtube.com/watch?v=mLPg49b33sA)
+- [Prometheus blog series](https://blog.pvincent.io/2017/12/prometheus-blog-series-part-1-metrics-and-labels/)
+
 
