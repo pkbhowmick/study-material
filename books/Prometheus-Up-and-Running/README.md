@@ -343,9 +343,73 @@ Selectors is used to limit the labels. Like ```process_resident_memory_bytes{job
 	- =~ is the regular expression matcher
 	- !~ is the negative regular expression matcher
 
-- Instant Vector:
+- Instant Vector: An instant vector selector returns an instant vector of the most recent samples before the query evaluation time.
+
+- Range Vector: Unlike an instant vector selector which returns one sample per time series, a range vector selector can return many samples for each time series. Range vectors are always used with the rate function.
+
+- Offset: Offset allows to take the evaluation time for a query. For example: ```process_resident_memory_bytes{job="node"} offset 1h``` would get memory usage an hour before the query evaluation time.
+
+### HTTP API
+Prometheus offers a number of HTTP APIs. All the endpoints of interest are under /api/v1.
+
+- query: The query endpoint or more formally ```/api/v1/query``` executes a PromQL expression at a given time and returns the result.
+
+A sample query and the corresponding output is given below:
+
+<details>
+
+<summary>Example</summary>
+
+```
+Query url: http://localhost:9090/api/v1/query?query=process_resident_memory_bytes
+
+Response: 
+
+{
+    "status": "success",
+    "data": {
+        "resultType": "vector",
+        "result": [
+            {
+                "metric": {
+                    "__name__": "process_resident_memory_bytes",
+                    "instance": "localhost:8081",
+                    "job": "node",
+                    "team": "infra"
+                },
+                "value": [
+                    1616061038.935,
+                    "24301568"
+                ]
+            },
+            {
+                "metric": {
+                    "__name__": "process_resident_memory_bytes",
+                    "instance": "localhost:9090",
+                    "job": "prometheus",
+                    "team": "monitoring"
+                },
+                "value": [
+                    1616061038.935,
+                    "160964608"
+                ]
+            }
+        ]
+    }
+}
+
+```
+
+</details>
+
+- query_range: The query range endpoint at ```/api/v1/query_range``` is the main http endpoint of Prometheus as it is the endpoint to use for graphing.
+
 
 ## Resources:
 - [Prometheus documentation](https://prometheus.io/docs/prometheus/latest/getting_started/)
+- [Introduction to Prometheus](https://www.youtube.com/watch?v=ZtYMuxAj7EU)
 - [Prometheus Architecture Explained](https://www.youtube.com/watch?v=h4Sl21AKiDg&t=1s)
 - [Prometheus Tutorial by Edureka](https://www.youtube.com/watch?v=7gW5pSM6dlU)
+- [Setup Prometheus monitoring on kubernetes using helm and prometheus operator | Part-1](https://www.youtube.com/watch?v=QoDqxm7ybLc)
+- [Prometheus Monitoring - Steps to monitor third-party apps using Prometheus Exporter | Part-2](https://www.youtube.com/watch?v=mLPg49b33sA)
+
