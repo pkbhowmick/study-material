@@ -271,6 +271,79 @@ scrape_configs:
 - By default there are some common target labels. They are job & instance. If the target has no instance label, it is defaulted to the value of the address label from service metadata.
 
 
+## Introduction to PromQL
+
+PromQL is the Prometheus Query Language. 
+
+### Gauge
+
+PromQL for Gauge:
+- sum
+- average 
+- minimum
+- maximum
+
+Another one is without to skip some labels.
+
+Examples:
+- sum without(device, fstype, mountpoint)(node_filesystem_size_bytes)
+- max without(device, fstype, mountpoint)(node_filesystem_size_bytes)
+- min (node_filesystem_size_bytes)
+- avg (node_filesystem_size_bytes)
+
+### Counter
+
+- Counter tracts the number or size of events, and the value of the applications expose on thier "/metrics" path is the total since it started.
+
+- As counter is increasing over time, rate function is used to see the rate of change for a specific time bound. Example: rate(node_network_receive_bytes_total[5m]) will show the result of the amount of traffic received per second over the last 5 minutes.
+
+- The output of rate is a gauge, so the same aggregations apply as for gauges.
+
+### Summary
+
+- A summary metric will usually contain both a _sum and _count. The _sum and _count are both counters.
+
+- For example, prometheus exposes a http_response_size_bytes summary where http_response_size_bytes_count tracks the number of requests. Similarly, http_response_size_bytes_sum is a counter with the number of bytes of each handle has returned. 
+
+- As both are counters, before aggregating rate must be used.
+
+Examples:
+
+```
+sum without(handler)(rate(http_response_size_bytes_count[5m]))
+
+sum without(handler)(rate(http_response_size_bytes_sum[5m]))
+```
+N.B. To get the average we can use division for avobe results.
+
+
+### Histogram
+
+- Histogram metrics allow to track the distribution of the size of events, allowing to calculate quantiles from them. For example, histogram can be used to calculate the 0.9 quantile latency.
+
+- Histogram metric has time series with a _bucket suffix. Each bucket has a le label, which a counter of howq many events have a size less than or equal to the bucket boundary. 
+
+- Histogram metrics also include _sum and _count metrics, which is exactly same as for the summary metric.
+
+Example:
+
+```
+histogram_quantile(
+0.90,
+rate(prometheus_tsdb_compaction_duration_seconds_bucket[1d]))
+```
+
+### Selectors
+
+Selectors is used to limit the labels. Like ```process_resident_memory_bytes{job="node"}``` is a selector that will return all time series with the name process_resident_memory_bytes and a job label of node. Here job="node" is called a matcher.
+
+- Matchers: There are four matchers:
+	- = is the equality based matcher
+	- != is the negative equality matcher
+	- =~ is the regular expression matcher
+	- !~ is the negative regular expression matcher
+
+- Instant Vector:
 
 ## Resources:
 - [Prometheus documentation](https://prometheus.io/docs/prometheus/latest/getting_started/)
