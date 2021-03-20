@@ -26,6 +26,18 @@ A core metrics pipeline consists of:
 Usage: These metrics are used by core system components, such as scheduling logic i.e. horizontal pod autoscaling based on system metrics.
 
 
+### Kubernetes Metrics Server
+- Metrics server is a scalable, efficient source of container resource metrics for Kubernetes built-in auto scaling pipeline.
+
+- Metrics server collects resource metrics from kubelets and expose them in kubernetes api server through metrics api for use by horizontal and vertical pod auto scaler.
+
+Usages: 
+- CPU/memory based horizontal auto scaling (Horizontal pod auto scaler)
+- Automatically adjusting/suggesting resources needed by containers (Vertical pod auto scaler)
+
+
+
+
 ## Monitoring Pipeline
 A monitoring pipeline used for collecting various metrics from the system and expose them to the end users. Data collected from monitoring pipeline may content of the following group of metrics:
 - core system metrics
@@ -35,3 +47,5 @@ A monitoring pipeline used for collecting various metrics from the system and ex
 
 ## Resources
 - [Kubernetes Monitoring Architecture](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/instrumentation/monitoring_architecture.md)
+
+- [Kubernetes Metrics Server](https://github.com/kubernetes-sigs/metrics-server)
