@@ -35,6 +35,8 @@ Usages:
 - CPU/memory based horizontal auto scaling (Horizontal pod auto scaler)
 - Automatically adjusting/suggesting resources needed by containers (Vertical pod auto scaler)
 
+N.B. Metrics Server is not for non-autoscaling purposes. It shouldn't be used to forward metrics to monitoring solutions or as a source of monitoring solutions metrics. 
+
 
 
 
@@ -49,3 +51,6 @@ A monitoring pipeline used for collecting various metrics from the system and ex
 - [Kubernetes Monitoring Architecture](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/instrumentation/monitoring_architecture.md)
 
 - [Kubernetes Metrics Server](https://github.com/kubernetes-sigs/metrics-server)
+
+- [Kubernetes Metrics Options](https://blog.containership.io/kubernetes-metrics-collection-options/)
+
