@@ -102,3 +102,16 @@ spec:
 
 - It is connected with a service and that Service is connected with a Service Monitor custom resource.
 
+### Prometheus Architecture in Kubernetes Cluster
+
+![Prometheus architecture](static/prometheus-architecture.png)
+
+### Kube-State-Metrics Architecture in Kubernetes Cluster
+
+![kube-state-metrics architecture](static/kube-state-metrics-architecture.png)
+
+
+
+
+
+
