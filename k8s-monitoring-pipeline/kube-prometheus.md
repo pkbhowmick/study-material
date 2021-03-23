@@ -27,17 +27,20 @@
 
 - Grafana (Dashboard & Deployment)
 
-- Kube-Stata-Metrics
-
 - Service Monitor
 
-- Node Exporter
+- Exporter (Node exporter, kube-state-metrics, blackbox exporter)
 
 - Prometheus Adapter
 
 - Prometheus Operator
 
-- Prometheus Deployment
+- Prometheus Server
+
+
+## Component High Level Architecture
+
+
 
 
 ## Prometheus Custom Resource Definition
