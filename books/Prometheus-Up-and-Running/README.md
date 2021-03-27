@@ -424,6 +424,10 @@ runtime environments such as systemd.
 There are currently five service discovery in kubernetes with prometheus namely node, endpoints, service, pod and ingress.
 
 
+### kube-state-metrics
+Using kubernetes service discovery, Prometheus scrape data about the applications and kubernetes structure. But it doesn't collect the metrics about kubernetes resources like service, deployments etc. For this an external exporter will be needed. kube-state-metrics is the exporter here.
+
+## Writing exporter
 
 
 
