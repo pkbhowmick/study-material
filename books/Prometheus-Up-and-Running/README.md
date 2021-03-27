@@ -412,6 +412,32 @@ Response:
 - query_range: The query range endpoint at ```/api/v1/query_range``` is the main http endpoint of Prometheus as it is the endpoint to use for graphing.
 
 
+## Container and Kubernetes
+
+### cAdvisor
+In the same way the Node exporter provides metrics about the machine, cAdvisor is
+an exporter that provides metrics about cgroups. Cgroups are a Linux kernel isolation
+feature that are usually used to implement containers on Linux, and are also used by
+runtime environments such as systemd.
+
+### Kubernetes Service Discovery
+There are currently five service discovery in kubernetes with prometheus namely node, endpoints, service, pod and ingress.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Resources:
 - [Prometheus documentation](https://prometheus.io/docs/prometheus/latest/getting_started/)
 - [Introduction to Prometheus](https://www.youtube.com/watch?v=ZtYMuxAj7EU)
